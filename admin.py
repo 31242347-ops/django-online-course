@@ -10,6 +10,11 @@ from .models import (
 )
 
 
+class LessonInline(admin.StackedInline):
+    model = Lesson
+    extra = 1
+
+
 class QuestionInline(admin.StackedInline):
     model = Question
     extra = 1
@@ -30,7 +35,10 @@ class LessonAdmin(admin.ModelAdmin):
 
 
 class CourseAdmin(admin.ModelAdmin):
-    inlines = [QuestionInline]
+    inlines = [LessonInline, QuestionInline]
+    list_display = ("name", "pub_date", "instructor")
+    list_filter = ("pub_date",)
+    search_fields = ("name", "description")
 
 
 admin.site.register(Course, CourseAdmin)
